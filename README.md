@@ -7,6 +7,7 @@ paradigm script:
 preprocessing scripts:
    thalhiv2_raw_to_bids.py - converts raw EEG files to BIDS format
    thalhiv2_eeg_pipeline.py - preprocess EEG files and create basic visual ERP plots
-   ThalHiV2_EEG_behavioral_data_checks_and_plots - clean, organize, and prepare behavioral data and make basic RT and accuracy plots
+   ThalHiV2_EEG_behavioral_data_checks_and_plots.ipynb - clean, organize, and prepare behavioral data and make basic RT and accuracy plots
 
 Analysis scripts:
+   need to add...
