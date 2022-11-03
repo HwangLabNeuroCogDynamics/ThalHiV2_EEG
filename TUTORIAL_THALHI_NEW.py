@@ -87,16 +87,20 @@ for ind, date_cell in enumerate(subj_info_df["SessionDate"]): # loop through the
 #ind = len(subj_info_df["Participant_ID"]) # set row as length of rows plus one (avoid overwriting data)
 version = subj_info_df.loc[ind, 'Version'] # pull out version for this subject
 respord = subj_info_df.loc[ind, 'Response_Order']
+counterbalance = subj_info_df.loc[ind, 'Counterbalance']
 # Store info about the experiment session
 expName = 'ThalHi_v2'  # from the Builder filename that created this script
-expInfo = {'Participant_ID': int(cur_subid),  'Version': version, 'Response_Order': respord, 'Method': ['EEG','BEH'], 'Tutorial_or_Practice': ['tutorial','practice']} 
+expInfo = {'Participant_ID': int(cur_subid), 'Counterbalance': counterbalance, 'Version': version, 'Response_Order': respord, 'Method': ['EEG','BEH'], 'Tutorial_or_Practice': ['tutorial','practice']} 
 # VERSION:  FS = Filled & Shape ... FC = Filled & Color ... SC = Shape & Color
 
 dlg = gui.DlgFromDict(dictionary=expInfo, title=expName, sortKeys=False) # Gui grabs the dictionary to create a pre-experiment info deposit
 if dlg.OK == False:
     core.quit()  # user pressed cancel
 expInfo['expName'] = expName
-
+# re-save variables in case the gui changed them
+version = expInfo['Version']
+respord = expInfo['Response_Order']
+counterbalance = expInfo['Counterbalance']
 
 ######################################################################################################################
 #----------------setup windows and display objects--------
@@ -313,52 +317,60 @@ tree_imgs = {'texture':{'fsr':visual.ImageStim(win=win, image=os.getcwd()+'/tuto
                         'dar':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/color/dar.png', units='norm', pos=(0,0)),
                         'dab':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/color/dab.png', units='norm', pos=(0,0)),}}
 
-Prac_Cue_types = {'fsr': {'cue':'fsr', 'Color':'red',  'Texture':'Filled',  'Shape':'Star',     'Feature':{'texture':'shape', 'shape':'color',   'color':'shape'},   'Task':{'texture':'Scene', 'shape':'Face',  'color':'Scene'}, 'cue_stim': copy.copy(filled_star_red) },
-                 'fsb': {'cue':'fsb', 'Color':'blue', 'Texture':'Filled',   'Shape':'Star',     'Feature':{'texture':'shape', 'shape':'color',   'color':'texture'}, 'Task':{'texture':'Scene', 'shape':'Scene', 'color':'Face'}, 'cue_stim': copy.copy(filled_star_blue) },
-                 'far': {'cue':'far', 'Color':'red',  'Texture':'Filled',   'Shape':'Asterisk', 'Feature':{'texture':'shape', 'shape':'texture', 'color':'shape'},   'Task':{'texture':'Face',  'shape':'Face',  'color':'Face'}, 'cue_stim': copy.copy(filled_asterisk_red) },
-                 'fab': {'cue':'fab', 'Color':'blue', 'Texture':'Filled',   'Shape':'Asterisk', 'Feature':{'texture':'shape', 'shape':'texture', 'color':'texture'}, 'Task':{'texture':'Face',  'shape':'Face',  'color':'Face'}, 'cue_stim': copy.copy(filled_asterisk_blue) },
-                 'dsr': {'cue':'dsr', 'Color':'red',  'Texture':'Outline',  'Shape':'Star',     'Feature':{'texture':'color', 'shape':'color',   'color':'shape'},   'Task':{'texture':'Face',  'shape':'Face',  'color':'Scene'}, 'cue_stim': copy.copy(donut_star_red) },
-                 'dsb': {'cue':'dsb', 'Color':'blue', 'Texture':'Outline',  'Shape':'Star',     'Feature':{'texture':'color', 'shape':'color',   'color':'texture'}, 'Task':{'texture':'Scene', 'shape':'Scene', 'color':'Scene'}, 'cue_stim': copy.copy(donut_star_blue) },
-                 'dab': {'cue':'dab', 'Color':'blue', 'Texture':'Outline',  'Shape':'Asterisk', 'Feature':{'texture':'color', 'shape':'texture', 'color':'texture'}, 'Task':{'texture':'Scene', 'shape':'Scene', 'color':'Scene'}, 'cue_stim': copy.copy(donut_asterisk_blue) },
-                 'dar': {'cue':'dar', 'Color':'red',  'Texture':'Outline',  'Shape':'Asterisk', 'Feature':{'texture':'color', 'shape':'texture', 'color':'shape'},   'Task':{'texture':'Face',  'shape':'Scene', 'color':'Face'}, 'cue_stim': copy.copy(donut_asterisk_red) }}
+Prac_Cue_types = {'fsr': {'cue':'fsr', 'Color':'red',  'Texture':'Filled',  'Shape':'Star',     'Feature':{'texture':'shape', 'shape':'color',   'color':'shape'},   
+                            'Task':{'A':{'texture':'Scene', 'shape':'Face',  'color':'Scene'},'B':{'texture':'Face', 'shape':'Face',  'color':'Face'}}, 'cue_stim': copy.copy(filled_star_red) },
+                 'fsb': {'cue':'fsb', 'Color':'blue', 'Texture':'Filled',   'Shape':'Star',     'Feature':{'texture':'shape', 'shape':'color',   'color':'texture'}, 
+                            'Task':{'A':{'texture':'Scene', 'shape':'Scene', 'color':'Face'}, 'B':{'texture':'Scene', 'shape':'Face',  'color':'Scene'}}, 'cue_stim': copy.copy(filled_star_blue) },
+                 'far': {'cue':'far', 'Color':'red',  'Texture':'Filled',   'Shape':'Asterisk', 'Feature':{'texture':'shape', 'shape':'texture', 'color':'shape'},   
+                            'Task':{'A':{'texture':'Face',  'shape':'Face',  'color':'Face'}, 'B':{'texture':'Face', 'shape':'Face',  'color':'Face'}}, 'cue_stim': copy.copy(filled_asterisk_red) },
+                 'fab': {'cue':'fab', 'Color':'blue', 'Texture':'Filled',   'Shape':'Asterisk', 'Feature':{'texture':'shape', 'shape':'texture', 'color':'texture'}, 
+                            'Task':{'A':{'texture':'Face',  'shape':'Face',  'color':'Face'}, 'B':{'texture':'Scene', 'shape':'Scene',  'color':'Face'}}, 'cue_stim': copy.copy(filled_asterisk_blue) },
+                 'dsr': {'cue':'dsr', 'Color':'red',  'Texture':'Outline',  'Shape':'Star',     'Feature':{'texture':'color', 'shape':'color',   'color':'shape'},   
+                            'Task':{'A':{'texture':'Face',  'shape':'Face',  'color':'Scene'}, 'B':{'texture':'Scene', 'shape':'Scene',  'color':'Scene'}}, 'cue_stim': copy.copy(donut_star_red) },
+                 'dsb': {'cue':'dsb', 'Color':'blue', 'Texture':'Outline',  'Shape':'Star',     'Feature':{'texture':'color', 'shape':'color',   'color':'texture'}, 
+                            'Task':{'A':{'texture':'Scene', 'shape':'Scene', 'color':'Scene'}, 'B':{'texture':'Scene', 'shape':'Scene',  'color':'Scene'}}, 'cue_stim': copy.copy(donut_star_blue) },
+                 'dab': {'cue':'dab', 'Color':'blue', 'Texture':'Outline',  'Shape':'Asterisk', 'Feature':{'texture':'color', 'shape':'texture', 'color':'texture'}, 
+                            'Task':{'A':{'texture':'Scene', 'shape':'Scene', 'color':'Scene'}, 'B':{'texture':'Face', 'shape':'Scene',  'color':'Face'}}, 'cue_stim': copy.copy(donut_asterisk_blue) },
+                 'dar': {'cue':'dar', 'Color':'red',  'Texture':'Outline',  'Shape':'Asterisk', 'Feature':{'texture':'color', 'shape':'texture', 'color':'shape'},   
+                            'Task':{'A':{'texture':'Face',  'shape':'Scene', 'color':'Face'}, 'B':{'texture':'Face', 'shape':'Face',  'color':'Scene'}}, 'cue_stim': copy.copy(donut_asterisk_red) }}
 
 cue_list = ['fsr', 'fsb', 'far', 'fab', 'dsr', 'dsb', 'dab', 'dar']
-Cue_types = {'fsr': {'cue':'fsr', 'Color':'red',  'Texture':'Filled', 'Shape':'Star',     'Task':{'texture':'Scene', 'shape':'Face',  'color':'Scene'}, 
+Cue_types = {'fsr': {'cue':'fsr', 'Color':'red',  'Texture':'Filled', 'Shape':'Star',     'Task':{'A':{'texture':'Scene', 'shape':'Face',  'color':'Scene'},'B':{'texture':'Face', 'shape':'Face',  'color':'Face'}}, 
                      'Stay': {'texture': ['fsr','fsb'],            'shape': ['fsr','dsr'],             'color': ['dsr','fsr']}, 
                      'IDS': {'texture': ['far','fab'],             'shape': ['fsb','dsb'],             'color': ['far','dar']}, 
                      'EDS': {'texture': ['dsr','dsb','dab','dar'], 'shape': ['far','fab','dar','dab'], 'color': ['fab','fsb','dab','dsb']}, 'cue_stim': copy.copy(filled_star_red) },
              
-             'fsb': {'cue':'fsb', 'Color':'blue', 'Texture':'Filled', 'Shape':'Star',     'Task':{'texture':'Scene', 'shape':'Scene', 'color':'Face'},  
+             'fsb': {'cue':'fsb', 'Color':'blue', 'Texture':'Filled', 'Shape':'Star',     'Task':{'A':{'texture':'Scene', 'shape':'Scene', 'color':'Face'}, 'B':{'texture':'Scene', 'shape':'Face',  'color':'Scene'}}, 
                      'Stay': {'texture': ['fsr','fsb'],            'shape': ['fsb','dsb'],             'color': ['fsb','fab']}, 
                      'IDS': {'texture': ['far','fab'],             'shape': ['fsr','dsr'],             'color': ['dab','dsb']}, 
                      'EDS': {'texture': ['dsr','dsb','dab','dar'], 'shape': ['far','fab','dar','dab'], 'color': ['far','dar','fsr','dsr']}, 'cue_stim': copy.copy(filled_star_blue) },
              
-             'far': {'cue':'far', 'Color':'red',  'Texture':'Filled', 'Shape':'Asterisk', 'Task':{'texture':'Face',  'shape':'Face',  'color':'Face'},  
+             'far': {'cue':'far', 'Color':'red',  'Texture':'Filled', 'Shape':'Asterisk', 'Task':{'A':{'texture':'Face',  'shape':'Face',  'color':'Face'}, 'B':{'texture':'Face', 'shape':'Face',  'color':'Face'}}, 
                      'Stay': {'texture': ['far','fab'],            'shape': ['far','fab'],              'color': ['far','dar']}, 
                      'IDS': {'texture': ['fsr','fsb'],             'shape': ['dar','dab'],              'color': ['dsr','fsr']}, 
                      'EDS': {'texture': ['dsr','dsb','dab','dar'], 'shape': ['fsr','dsr','fsb','dsb'],  'color': ['fab','fsb','dab','dsb']}, 'cue_stim': copy.copy(filled_asterisk_red) },
              
-             'fab': {'cue':'fab', 'Color':'blue', 'Texture':'Filled', 'Shape':'Asterisk', 'Task':{'texture':'Face',  'shape':'Face',  'color':'Face'},  
+             'fab': {'cue':'fab', 'Color':'blue', 'Texture':'Filled', 'Shape':'Asterisk', 'Task':{'A':{'texture':'Face',  'shape':'Face',  'color':'Face'}, 'B':{'texture':'Scene', 'shape':'Scene',  'color':'Face'}}, 
                      'Stay': {'texture': ['far','fab'],            'shape': ['far','fab'],             'color': ['fsb','fab']}, 
                      'IDS': {'texture': ['fsr','fsb'],             'shape': ['dar','dab'],             'color': ['dab','dsb']}, 
                      'EDS': {'texture': ['dsr','dsb','dab','dar'], 'shape': ['fsr','dsr','fsb','dsb'], 'color': ['far','dar','fsr','dsr']}, 'cue_stim': copy.copy(filled_asterisk_blue) },
              
-             'dsr': {'cue':'dsr', 'Color':'red',  'Texture':'Donut',  'Shape':'Star',     'Task':{'texture':'Face',  'shape':'Face',  'color':'Scene'}, 
+             'dsr': {'cue':'dsr', 'Color':'red',  'Texture':'Donut',  'Shape':'Star',     'Task':{'A':{'texture':'Face',  'shape':'Face',  'color':'Scene'}, 'B':{'texture':'Scene', 'shape':'Scene',  'color':'Scene'}},
                      'Stay': {'texture': ['dar','dsr'],            'shape': ['fsr','dsr'],             'color': ['dsr','fsr']}, 
                      'IDS': {'texture': ['dab','dsb'],             'shape': ['fsb','dsb'],             'color': ['far','dar']}, 
                      'EDS': {'texture': ['fsr','fsb','far','fab'], 'shape': ['far','fab','dar','dab'], 'color': ['fab','fsb','dab','dsb']}, 'cue_stim': copy.copy(donut_star_red) },
              
-             'dsb': {'cue':'dsb', 'Color':'blue', 'Texture':'Donut',  'Shape':'Star',     'Task':{'texture':'Scene', 'shape':'Scene', 'color':'Scene'}, 
+             'dsb': {'cue':'dsb', 'Color':'blue', 'Texture':'Donut',  'Shape':'Star',     'Task':{'A':{'texture':'Scene', 'shape':'Scene', 'color':'Scene'}, 'B':{'texture':'Scene', 'shape':'Scene',  'color':'Scene'}},
                      'Stay': {'texture': ['dab','dsb'],            'shape': ['fsb','dsb'],             'color': ['dab','dsb']}, 
                      'IDS': {'texture': ['dar','dsr'],             'shape': ['fsr','dsr'],             'color': ['fsb','fab']}, 
                      'EDS': {'texture': ['fsr','fsb','far','fab'], 'shape': ['far','fab','dar','dab'], 'color': ['far','dar','fsr','dsr']}, 'cue_stim': copy.copy(donut_star_blue) },
              
-             'dab': {'cue':'dab', 'Color':'blue', 'Texture':'Donut',  'Shape':'Asterisk', 'Task':{'texture':'Scene', 'shape':'Scene', 'color':'Scene'}, 
+             'dab': {'cue':'dab', 'Color':'blue', 'Texture':'Donut',  'Shape':'Asterisk', 'Task':{'A':{'texture':'Scene', 'shape':'Scene', 'color':'Scene'}, 'B':{'texture':'Face', 'shape':'Scene',  'color':'Face'}},
                      'Stay': {'texture': ['dab','dsb'],            'shape': ['dar','dab'],             'color': ['dab','dsb']}, 
                      'IDS': {'texture': ['dar','dsr'],             'shape': ['far','fab'],             'color': ['fsb','fab']}, 
                      'EDS': {'texture': ['fsr','fsb','far','fab'], 'shape': ['fsr','dsr','fsb','dsb'], 'color': ['far','dar','fsr','dsr']}, 'cue_stim': copy.copy(donut_asterisk_blue) },
              
-             'dar': {'cue':'dar', 'Color':'red',  'Texture':'Donut',  'Shape':'Asterisk', 'Task':{'texture':'Face',  'shape':'Scene', 'color':'Face'},  
+             'dar': {'cue':'dar', 'Color':'red',  'Texture':'Donut',  'Shape':'Asterisk', 'Task':{'A':{'texture':'Face',  'shape':'Scene', 'color':'Face'}, 'B':{'texture':'Face', 'shape':'Face',  'color':'Scene'}}, 
                      'Stay': {'texture': ['dar','dsr'],            'shape': ['dar','dab'],             'color': ['dar','far']}, 
                      'IDS': {'texture': ['dab','dsb'],             'shape': ['far','fab'],             'color': ['dsr','fsr']}, 
                      'EDS': {'texture': ['fsr','fsb','far','fab'], 'shape': ['fsr','dsr','fsb','dsb'], 'color': ['fab','fsb','dab','dsb']}, 'cue_stim': copy.copy(donut_asterisk_red) }}
@@ -409,7 +421,7 @@ def prepare_block_trials(i_block, Cue_types, Task_Parameters, delay_cond, retroc
         out_dict['image_filename'].append( Img_Dict[pic_order[i]]['filename'] )
         # record what correct resp would be 
         # 1st if: what task is associated with this cue 
-        out_dict['task'].append(Cue_types[out_dict['cue'][i]]['Task'][out_dict['retrocue'][i]])
+        out_dict['task'].append(Cue_types[out_dict['cue'][i]]['Task'][counterbalance][out_dict['retrocue'][i]])
         # 2nd if: what stimulus was presented 
         if out_dict['task'][i] == 'Scene':
             if out_dict['stimulus'][i]=='Face':
@@ -763,7 +775,7 @@ def run_tutorial(version, Prac_Cue_types, tree_list, trl_fig_list):
                 win.flip()
                 event.waitKeys()
                 # now give answer   
-                Answer.text = "Feature: " + Prac_Cue_types[cur_cue]['Feature'][cur_retrocue] + "\nTask: " + Prac_Cue_types[cur_cue]['Task'][cur_retrocue]
+                Answer.text = "Feature: " + Prac_Cue_types[cur_cue]['Feature'][cur_retrocue] + "\nTask: " + Prac_Cue_types[cur_cue]['Task'][counterbalance][cur_retrocue]
                 Answer.draw()
                 win.flip()
                 event.waitKeys()
