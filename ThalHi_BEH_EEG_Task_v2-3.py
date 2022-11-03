@@ -87,9 +87,10 @@ for ind, date_cell in enumerate(subj_info_df["SessionDate"]): # loop through the
 #ind = len(subj_info_df["Participant_ID"]) # set row as length of rows plus one (avoid overwriting data)
 version = subj_info_df.loc[ind, 'Version'] # pull out version for this subject
 respord = subj_info_df.loc[ind, 'Response_Order']
+counterbalance = subj_info_df.loc[ind, 'Counterbalance']
 # Store info about the experiment session
 expName = 'ThalHiV2'  # from the Builder filename that created this script
-expInfo = {'Participant_ID': int(cur_subid),  'Version': version, 'Response_Order': respord, 'Method': ['EEG','BEH'],
+expInfo = {'Participant_ID': int(cur_subid), 'Counterbalance': counterbalance,  'Version': version, 'Response_Order': respord, 'Method': ['EEG','BEH'],
            'Gender': ['Male','Female','Non-Binary','Other','Prefer not to say'], 'Age': 0} 
 # VERSION:  FS = Filled & Shape ... FC = Filled & Color ... SC = Shape & Color
 
@@ -97,6 +98,10 @@ dlg = gui.DlgFromDict(dictionary=expInfo, title=expName, sortKeys=False) # Gui g
 if dlg.OK == False:
     core.quit()  # user pressed cancel
 expInfo['expName'] = expName
+# re-save variables in case the gui changed them
+version = expInfo['Version']
+respord = expInfo['Response_Order']
+counterbalance = expInfo['Counterbalance']
 
 if new_entry:
     # SAVE OUT ENTERED INFO BEFORE STARTING TASK
@@ -105,6 +110,9 @@ if new_entry:
     subj_info_df.loc[ind, 'StartTime'] = datetime.today().strftime('%I:%M:%S %p')
     subj_info_df.loc[ind, 'Gender'] = expInfo['Gender']
     subj_info_df.loc[ind, 'Age'] = expInfo['Age']
+    subj_info_df.loc[ind, 'Version'] = expInfo['Version']
+    subj_info_df.loc[ind, 'Response_Order'] = expInfo['Response_Order']
+    subj_info_df.loc[ind, 'Counterbalance'] = expInfo['Counterbalance']
     #print(subj_info_df)
     if expInfo['Participant_ID'] != 99999:
         subj_info_df.to_csv("ThalHi_v2_Subject_Info.csv", index=False)
@@ -327,42 +335,42 @@ Prac_Cue_types = {'fsr': {'cue':'fsr', 'Color':'red',  'Texture':'Filled',  'Sha
                  'dar': {'cue':'dar', 'Color':'red',  'Texture':'Outline',  'Shape':'Asterisk', 'Task':{'texture':'Face',  'shape':'Scene', 'color':'Face'}, 'cue_stim': copy.copy(donut_asterisk_red) }}
 
 cue_list = ['fsr', 'fsb', 'far', 'fab', 'dsr', 'dsb', 'dab', 'dar']
-Cue_types = {'fsr': {'cue':'fsr', 'Color':'red',  'Texture':'Filled', 'Shape':'Star',     'Task':{'texture':'Scene', 'shape':'Face',  'color':'Scene'}, 
+Cue_types = {'fsr': {'cue':'fsr', 'Color':'red',  'Texture':'Filled', 'Shape':'Star',     'Task':{'A':{'texture':'Scene', 'shape':'Face',  'color':'Scene'},'B':{'texture':'Face', 'shape':'Face',  'color':'Face'}}, 
                      'Stay': {'texture': ['fsr','fsb'],            'shape': ['fsr','dsr'],             'color': ['dsr','fsr']}, 
                      'IDS': {'texture': ['far','fab'],             'shape': ['fsb','dsb'],             'color': ['far','dar']}, 
                      'EDS': {'texture': ['dsr','dsb','dab','dar'], 'shape': ['far','fab','dar','dab'], 'color': ['fab','fsb','dab','dsb']}, 'cue_stim': copy.copy(filled_star_red) },
              
-             'fsb': {'cue':'fsb', 'Color':'blue', 'Texture':'Filled', 'Shape':'Star',     'Task':{'texture':'Scene', 'shape':'Scene', 'color':'Face'},  
+             'fsb': {'cue':'fsb', 'Color':'blue', 'Texture':'Filled', 'Shape':'Star',     'Task':{'A':{'texture':'Scene', 'shape':'Scene', 'color':'Face'}, 'B':{'texture':'Scene', 'shape':'Face',  'color':'Scene'}}, 
                      'Stay': {'texture': ['fsr','fsb'],            'shape': ['fsb','dsb'],             'color': ['fsb','fab']}, 
                      'IDS': {'texture': ['far','fab'],             'shape': ['fsr','dsr'],             'color': ['dab','dsb']}, 
                      'EDS': {'texture': ['dsr','dsb','dab','dar'], 'shape': ['far','fab','dar','dab'], 'color': ['far','dar','fsr','dsr']}, 'cue_stim': copy.copy(filled_star_blue) },
              
-             'far': {'cue':'far', 'Color':'red',  'Texture':'Filled', 'Shape':'Asterisk', 'Task':{'texture':'Face',  'shape':'Face',  'color':'Face'},  
+             'far': {'cue':'far', 'Color':'red',  'Texture':'Filled', 'Shape':'Asterisk', 'Task':{'A':{'texture':'Face',  'shape':'Face',  'color':'Face'}, 'B':{'texture':'Face', 'shape':'Face',  'color':'Face'}}, 
                      'Stay': {'texture': ['far','fab'],            'shape': ['far','fab'],              'color': ['far','dar']}, 
                      'IDS': {'texture': ['fsr','fsb'],             'shape': ['dar','dab'],              'color': ['dsr','fsr']}, 
                      'EDS': {'texture': ['dsr','dsb','dab','dar'], 'shape': ['fsr','dsr','fsb','dsb'],  'color': ['fab','fsb','dab','dsb']}, 'cue_stim': copy.copy(filled_asterisk_red) },
              
-             'fab': {'cue':'fab', 'Color':'blue', 'Texture':'Filled', 'Shape':'Asterisk', 'Task':{'texture':'Face',  'shape':'Face',  'color':'Face'},  
+             'fab': {'cue':'fab', 'Color':'blue', 'Texture':'Filled', 'Shape':'Asterisk', 'Task':{'A':{'texture':'Face',  'shape':'Face',  'color':'Face'}, 'B':{'texture':'Scene', 'shape':'Scene',  'color':'Face'}}, 
                      'Stay': {'texture': ['far','fab'],            'shape': ['far','fab'],             'color': ['fsb','fab']}, 
                      'IDS': {'texture': ['fsr','fsb'],             'shape': ['dar','dab'],             'color': ['dab','dsb']}, 
                      'EDS': {'texture': ['dsr','dsb','dab','dar'], 'shape': ['fsr','dsr','fsb','dsb'], 'color': ['far','dar','fsr','dsr']}, 'cue_stim': copy.copy(filled_asterisk_blue) },
              
-             'dsr': {'cue':'dsr', 'Color':'red',  'Texture':'Donut',  'Shape':'Star',     'Task':{'texture':'Face',  'shape':'Face',  'color':'Scene'}, 
+             'dsr': {'cue':'dsr', 'Color':'red',  'Texture':'Donut',  'Shape':'Star',     'Task':{'A':{'texture':'Face',  'shape':'Face',  'color':'Scene'}, 'B':{'texture':'Scene', 'shape':'Scene',  'color':'Scene'}},
                      'Stay': {'texture': ['dar','dsr'],            'shape': ['fsr','dsr'],             'color': ['dsr','fsr']}, 
                      'IDS': {'texture': ['dab','dsb'],             'shape': ['fsb','dsb'],             'color': ['far','dar']}, 
                      'EDS': {'texture': ['fsr','fsb','far','fab'], 'shape': ['far','fab','dar','dab'], 'color': ['fab','fsb','dab','dsb']}, 'cue_stim': copy.copy(donut_star_red) },
              
-             'dsb': {'cue':'dsb', 'Color':'blue', 'Texture':'Donut',  'Shape':'Star',     'Task':{'texture':'Scene', 'shape':'Scene', 'color':'Scene'}, 
+             'dsb': {'cue':'dsb', 'Color':'blue', 'Texture':'Donut',  'Shape':'Star',     'Task':{'A':{'texture':'Scene', 'shape':'Scene', 'color':'Scene'}, 'B':{'texture':'Scene', 'shape':'Scene',  'color':'Scene'}},
                      'Stay': {'texture': ['dab','dsb'],            'shape': ['fsb','dsb'],             'color': ['dab','dsb']}, 
                      'IDS': {'texture': ['dar','dsr'],             'shape': ['fsr','dsr'],             'color': ['fsb','fab']}, 
                      'EDS': {'texture': ['fsr','fsb','far','fab'], 'shape': ['far','fab','dar','dab'], 'color': ['far','dar','fsr','dsr']}, 'cue_stim': copy.copy(donut_star_blue) },
              
-             'dab': {'cue':'dab', 'Color':'blue', 'Texture':'Donut',  'Shape':'Asterisk', 'Task':{'texture':'Scene', 'shape':'Scene', 'color':'Scene'}, 
+             'dab': {'cue':'dab', 'Color':'blue', 'Texture':'Donut',  'Shape':'Asterisk', 'Task':{'A':{'texture':'Scene', 'shape':'Scene', 'color':'Scene'}, 'B':{'texture':'Face', 'shape':'Scene',  'color':'Face'}},
                      'Stay': {'texture': ['dab','dsb'],            'shape': ['dar','dab'],             'color': ['dab','dsb']}, 
                      'IDS': {'texture': ['dar','dsr'],             'shape': ['far','fab'],             'color': ['fsb','fab']}, 
                      'EDS': {'texture': ['fsr','fsb','far','fab'], 'shape': ['fsr','dsr','fsb','dsb'], 'color': ['far','dar','fsr','dsr']}, 'cue_stim': copy.copy(donut_asterisk_blue) },
              
-             'dar': {'cue':'dar', 'Color':'red',  'Texture':'Donut',  'Shape':'Asterisk', 'Task':{'texture':'Face',  'shape':'Scene', 'color':'Face'},  
+             'dar': {'cue':'dar', 'Color':'red',  'Texture':'Donut',  'Shape':'Asterisk', 'Task':{'A':{'texture':'Face',  'shape':'Scene', 'color':'Face'}, 'B':{'texture':'Face', 'shape':'Face',  'color':'Scene'}}, 
                      'Stay': {'texture': ['dar','dsr'],            'shape': ['dar','dab'],             'color': ['dar','far']}, 
                      'IDS': {'texture': ['dab','dsb'],             'shape': ['far','fab'],             'color': ['dsr','fsr']}, 
                      'EDS': {'texture': ['fsr','fsb','far','fab'], 'shape': ['fsr','dsr','fsb','dsb'], 'color': ['fab','fsb','dab','dsb']}, 'cue_stim': copy.copy(donut_asterisk_red) }}
@@ -413,7 +421,7 @@ def prepare_block_trials(i_block, Cue_types, Task_Parameters, delay_cond, retroc
         out_dict['image_filename'].append( Img_Dict[pic_order[i]]['filename'] )
         # record what correct resp would be 
         # 1st if: what task is associated with this cue 
-        out_dict['task'].append(Cue_types[out_dict['cue'][i]]['Task'][out_dict['retrocue'][i]])
+        out_dict['task'].append(Cue_types[out_dict['cue'][i]]['Task'][counterbalance][out_dict['retrocue'][i]])
         # 2nd if: what stimulus was presented 
         if out_dict['task'][i] == 'Scene':
             if out_dict['stimulus'][i]=='Face':
@@ -633,127 +641,127 @@ PrepForTask_Txt = visual.TextStim(win=win, name='RepeatInstruct', text=u'Please 
 
 
 
-def run_tutorial(version, Prac_Cue_types, tree_list):
-    # set up some text variables, dictionaries, and lists up front
-    cue_list = ['fsr', 'fsb', 'far', 'fab', 'dsr', 'dsb', 'dab', 'dar']
-    Overview = visual.TextStim(win=win, text=("The retro cues you will see in the task are " + version_retrocues[version][0] + " and " + version_retrocues[version][1]), font=u'Arial', units='norm', pos=(0, 0.3), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
-    textureTxt = visual.TextStim(win=win, text=u'If you see a texture retro cue you will need to first determine if the cue object presented at the beginning of the trial was filled in or just an outline', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.2), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
-    shapeTxt = visual.TextStim(win=win, text=u'If you see a shape retro cue you will need to first determine if the cue object presented at the beginning of the trial is an 8-point star or 8-point asterisk', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.2), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
-    colorTxt = visual.TextStim(win=win, text=u'If you see a color retro cue you will need to first determine if the cue object presented at the beginning of the trial is red or blue', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.2), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
-    RCL_Dict = {'texture':textureTxt, 'shape':shapeTxt, 'color':colorTxt}
-    LL_txt = visual.TextStim(win=win, text=u'text', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0,0.2), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1)
-    WhatTaskQ = visual.TextStim(win=win, text=u'If you see this cue object, what task should you perform?\nPress any key to see the answer', font=u'Arial', units='norm', pos=(0,0.5), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1)
-    Answer = visual.TextStim(win=win, text=u'Face', font=u'Arial', units='norm', pos=(0, 0), height=0.3, ori=0, color=u'white', colorSpace='rgb', opacity=1)
-    LL_Dict = {'texture':[['filled in','shape'],['only an outline','color']], 'shape':[['asterisk','texture'],['star','color']], 'color':[['red','shape'],['blue','texture']]}
-    LL_to_Task = {'shape':[['asterisk','face'],['star','scene']], 'color':[['red','face'],['blue','scene']], 'texture':[['filled in','face'],['only an outline','scene']]}
-    HCC_Dict = {'texture':{'shape':{'asterisk':['far','fab'], 'star':['fsr','fsb']}, 'color':{'red':['dar','dsr'], 'blue':['dsb','dab']}}, 
-                'shape':{'texture':{'filled in':['far','fab'], 'only an outline':['dar','dab']}, 'color':{'red':['fsr','dsr'], 'blue':['fsb','dsb']}}, 
-                'color':{'shape':{'asterisk':['far','dar'], 'star':['fsr','dsr']}, 'texture':{'filled in':['fab','fsb'], 'only an outline':['dab','dsb']}}}
-    obj_codes = {0:['f','d'], 1:['a','s'], 2:['r','b']}
+# def run_tutorial(version, Prac_Cue_types, tree_list):
+#     # set up some text variables, dictionaries, and lists up front
+#     cue_list = ['fsr', 'fsb', 'far', 'fab', 'dsr', 'dsb', 'dab', 'dar']
+#     Overview = visual.TextStim(win=win, text=("The retro cues you will see in the task are " + version_retrocues[version][0] + " and " + version_retrocues[version][1]), font=u'Arial', units='norm', pos=(0, 0.3), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
+#     textureTxt = visual.TextStim(win=win, text=u'If you see a texture retro cue you will need to first determine if the cue object presented at the beginning of the trial was filled in or just an outline', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.2), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
+#     shapeTxt = visual.TextStim(win=win, text=u'If you see a shape retro cue you will need to first determine if the cue object presented at the beginning of the trial is an 8-point star or 8-point asterisk', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.2), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
+#     colorTxt = visual.TextStim(win=win, text=u'If you see a color retro cue you will need to first determine if the cue object presented at the beginning of the trial is red or blue', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.2), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
+#     RCL_Dict = {'texture':textureTxt, 'shape':shapeTxt, 'color':colorTxt}
+#     LL_txt = visual.TextStim(win=win, text=u'text', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0,0.2), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1)
+#     WhatTaskQ = visual.TextStim(win=win, text=u'If you see this cue object, what task should you perform?\nPress any key to see the answer', font=u'Arial', units='norm', pos=(0,0.5), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1)
+#     Answer = visual.TextStim(win=win, text=u'Face', font=u'Arial', units='norm', pos=(0, 0), height=0.3, ori=0, color=u'white', colorSpace='rgb', opacity=1)
+#     LL_Dict = {'texture':[['filled in','shape'],['only an outline','color']], 'shape':[['asterisk','texture'],['star','color']], 'color':[['red','shape'],['blue','texture']]}
+#     LL_to_Task = {'shape':[['asterisk','face'],['star','scene']], 'color':[['red','face'],['blue','scene']], 'texture':[['filled in','face'],['only an outline','scene']]}
+#     HCC_Dict = {'texture':{'shape':{'asterisk':['far','fab'], 'star':['fsr','fsb']}, 'color':{'red':['dar','dsr'], 'blue':['dsb','dab']}}, 
+#                 'shape':{'texture':{'filled in':['far','fab'], 'only an outline':['dar','dab']}, 'color':{'red':['fsr','dsr'], 'blue':['fsb','dsb']}}, 
+#                 'color':{'shape':{'asterisk':['far','dar'], 'star':['fsr','dsr']}, 'texture':{'filled in':['fab','fsb'], 'only an outline':['dab','dsb']}}}
+#     obj_codes = {0:['f','d'], 1:['a','s'], 2:['r','b']}
     
-    # -------------------- Run Tutorial ------------------
-    # display initial text
-    Overview.draw()
-    tree_list[0].draw()
-    tree_list[1].draw()
-    win.flip()
-    event.waitKeys()
+#     # -------------------- Run Tutorial ------------------
+#     # display initial text
+#     Overview.draw()
+#     tree_list[0].draw()
+#     tree_list[1].draw()
+#     win.flip()
+#     event.waitKeys()
 
-    retrocue_list = version_retrocues[version]
-    tree_dict = {retrocue_list[0]:tree_list[0], retrocue_list[1]:tree_list[1]} # make something that indicates what tree is what since we are shuffling
-    Shuffle(retrocue_list) # shuffle the order so we don't just show one condition first all the time
-    for ind, cur_retrocue in enumerate(retrocue_list):
-        cur_tree = visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+cur_retrocue+'.png', units='norm', pos=(-0.7,0.7), size=0.55)
-        ### Display overview text for first retrocue (what feature dimension we're splitting by)
-        print('current retro cue:', cur_retrocue)
-        ex_stim1, ex_stim2 = copy_cueobjs_change_pos(cur_retrocue, [], Prac_Cue_types, obj_codes) # use Cue_Types dictionary to pull out cues related to the current sub-features (want one of each)
-        for cind in range(len(ex_stim1)): 
-            (Prac_Cue_types[ex_stim1[cind]]['cue_stim']).draw()
-            (Prac_Cue_types[ex_stim2[cind]]['cue_stim']).draw()
-        (RCL_Dict[cur_retrocue]).draw() # print overview for this specific retro cue
-        cur_tree.draw()
-        win.flip()
-        event.waitKeys()
+#     retrocue_list = version_retrocues[version]
+#     tree_dict = {retrocue_list[0]:tree_list[0], retrocue_list[1]:tree_list[1]} # make something that indicates what tree is what since we are shuffling
+#     Shuffle(retrocue_list) # shuffle the order so we don't just show one condition first all the time
+#     for ind, cur_retrocue in enumerate(retrocue_list):
+#         cur_tree = visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+cur_retrocue+'.png', units='norm', pos=(-0.7,0.7), size=0.55)
+#         ### Display overview text for first retrocue (what feature dimension we're splitting by)
+#         print('current retro cue:', cur_retrocue)
+#         ex_stim1, ex_stim2 = copy_cueobjs_change_pos(cur_retrocue, [], Prac_Cue_types, obj_codes) # use Cue_Types dictionary to pull out cues related to the current sub-features (want one of each)
+#         for cind in range(len(ex_stim1)): 
+#             (Prac_Cue_types[ex_stim1[cind]]['cue_stim']).draw()
+#             (Prac_Cue_types[ex_stim2[cind]]['cue_stim']).draw()
+#         (RCL_Dict[cur_retrocue]).draw() # print overview for this specific retro cue
+#         cur_tree.draw()
+#         win.flip()
+#         event.waitKeys()
         
-        # loop through sub-trees (should be 2)
-        LL_lists = LL_Dict[cur_retrocue]
-        Shuffle(LL_lists)
-        for cur_LL_list in LL_lists:
-            ### Display text for the 2nd feature dimension to focus on given which side of the 1st feature we're on
-            print('currently in this sub tree: ',cur_LL_list)
-            LL_txt.text = (("If the object is " + cur_LL_list[0] + ", the " + cur_LL_list[1] + " will determine what task (Face or Scene) that you should do on this trial."))
-            ex_stimA, ex_stimB = copy_cueobjs_change_pos(cur_retrocue, cur_LL_list, Prac_Cue_types, obj_codes)
-            for cind in range(len(ex_stimA)): 
-                (Prac_Cue_types[ex_stimA[cind]]['cue_stim']).draw()
-                (Prac_Cue_types[ex_stimB[cind]]['cue_stim']).draw()
-            cur_tree.draw()
-            LL_txt.draw()
-            win.flip()
-            event.waitKeys()
+#         # loop through sub-trees (should be 2)
+#         LL_lists = LL_Dict[cur_retrocue]
+#         Shuffle(LL_lists)
+#         for cur_LL_list in LL_lists:
+#             ### Display text for the 2nd feature dimension to focus on given which side of the 1st feature we're on
+#             print('currently in this sub tree: ',cur_LL_list)
+#             LL_txt.text = (("If the object is " + cur_LL_list[0] + ", the " + cur_LL_list[1] + " will determine what task (Face or Scene) that you should do on this trial."))
+#             ex_stimA, ex_stimB = copy_cueobjs_change_pos(cur_retrocue, cur_LL_list, Prac_Cue_types, obj_codes)
+#             for cind in range(len(ex_stimA)): 
+#                 (Prac_Cue_types[ex_stimA[cind]]['cue_stim']).draw()
+#                 (Prac_Cue_types[ex_stimB[cind]]['cue_stim']).draw()
+#             cur_tree.draw()
+#             LL_txt.draw()
+#             win.flip()
+#             event.waitKeys()
             
-            # loop through sub-trees (should be 2)
-            task_pair_lists = LL_to_Task[cur_LL_list[1]] # grabs current sub-feat (e.g., if shape, grabs star and asterisk)
-            Shuffle(task_pair_lists)
-            for cur_pair in task_pair_lists:
-                LL_txt.text = ((cur_pair[0] + " means you should do the " + cur_pair[1] + " task."))
-                LL_txt.draw()
-                cur_tree.draw()
-                # use Cue_Types dictionary to pull out cues related to the current sub-features (want both)
-                print((cur_pair[0] + " means you should do the " + cur_pair[1] + " task."))
-                print(HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][0], '\tretrocue:', cur_retrocue, '\tcur_LL_list:', cur_LL_list[1], '\tcur_pair:', cur_pair[0])
-                print(HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][1], '\tretrocue:', cur_retrocue, '\tcur_LL_list:', cur_LL_list[1], '\tcur_pair:', cur_pair[0])
-                (Prac_Cue_types[HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][0]]['cue_stim']).setPos((-0.15,-0.4))
-                (Prac_Cue_types[HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][1]]['cue_stim']).setPos((0.15,-0.4))
-                (Prac_Cue_types[HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][0]]['cue_stim']).draw()
-                (Prac_Cue_types[HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][1]]['cue_stim']).draw()
-                win.flip()
-                event.waitKeys()
+#             # loop through sub-trees (should be 2)
+#             task_pair_lists = LL_to_Task[cur_LL_list[1]] # grabs current sub-feat (e.g., if shape, grabs star and asterisk)
+#             Shuffle(task_pair_lists)
+#             for cur_pair in task_pair_lists:
+#                 LL_txt.text = ((cur_pair[0] + " means you should do the " + cur_pair[1] + " task."))
+#                 LL_txt.draw()
+#                 cur_tree.draw()
+#                 # use Cue_Types dictionary to pull out cues related to the current sub-features (want both)
+#                 print((cur_pair[0] + " means you should do the " + cur_pair[1] + " task."))
+#                 print(HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][0], '\tretrocue:', cur_retrocue, '\tcur_LL_list:', cur_LL_list[1], '\tcur_pair:', cur_pair[0])
+#                 print(HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][1], '\tretrocue:', cur_retrocue, '\tcur_LL_list:', cur_LL_list[1], '\tcur_pair:', cur_pair[0])
+#                 (Prac_Cue_types[HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][0]]['cue_stim']).setPos((-0.15,-0.4))
+#                 (Prac_Cue_types[HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][1]]['cue_stim']).setPos((0.15,-0.4))
+#                 (Prac_Cue_types[HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][0]]['cue_stim']).draw()
+#                 (Prac_Cue_types[HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][1]]['cue_stim']).draw()
+#                 win.flip()
+#                 event.waitKeys()
 
-            #WhatTaskQ.draw()
-            # draw the cue objects one by one for the current sub tree
-            # cur_LL_list[0] would tell me the conditon of the feature
-            # (Prac_Cue_types[HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][0]]['cue_stim']).draw()
-            # (Prac_Cue_types[HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][1]]['cue_stim']).draw()
+#             #WhatTaskQ.draw()
+#             # draw the cue objects one by one for the current sub tree
+#             # cur_LL_list[0] would tell me the conditon of the feature
+#             # (Prac_Cue_types[HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][0]]['cue_stim']).draw()
+#             # (Prac_Cue_types[HCC_Dict[cur_retrocue][cur_LL_list[1]][cur_pair[0]][1]]['cue_stim']).draw()
         
-        (tree_dict[cur_retrocue]).draw()
-        win.flip()
-        event.waitKeys()
+#         (tree_dict[cur_retrocue]).draw()
+#         win.flip()
+#         event.waitKeys()
         
-        # draw the cue objects one by one for the current retro cue tree
-        Shuffle(cue_list) # shuffle the order
-        for cur_cue in cue_list:
-            WhatTaskQ.draw()
-            (Prac_Cue_types[cur_cue]['cue_stim']).setPos((0,0))
-            (Prac_Cue_types[cur_cue]['cue_stim']).draw()
-            win.flip()
-            event.waitKeys()
-            # now give answer
-            Answer.text = Prac_Cue_types[cur_cue]['Task'][cur_retrocue]
-            Answer.draw()
-            win.flip()
-            event.waitKeys()
+#         # draw the cue objects one by one for the current retro cue tree
+#         Shuffle(cue_list) # shuffle the order
+#         for cur_cue in cue_list:
+#             WhatTaskQ.draw()
+#             (Prac_Cue_types[cur_cue]['cue_stim']).setPos((0,0))
+#             (Prac_Cue_types[cur_cue]['cue_stim']).draw()
+#             win.flip()
+#             event.waitKeys()
+#             # now give answer
+#             Answer.text = Prac_Cue_types[cur_cue]['Task'][cur_retrocue]
+#             Answer.draw()
+#             win.flip()
+#             event.waitKeys()
       
-        # practice for just one retro cue
-        repeat_prac = 1
-        while repeat_prac == 1:
-            pic_order = np.random.permutation( np.linspace(0, Prac_Task_Parameters['n_trials'], num=Prac_Task_Parameters['n_trials'], endpoint=False) )
-            out_dict = prepare_block_trials(0, Cue_types, Prac_Task_Parameters, Prac_Trl_Durs['delay_2'][ind], [cur_retrocue, cur_retrocue], Img_Dict, pic_order, resp_keys)
-            filename = thisDir_save + u'/ThalHi_data/v2_' + expInfo['Method'] + '_data/sub-%s_task-%s_block-00%s_date-%s.csv' % (expInfo['Participant_ID'], (expName+'PracticeWith'+cur_retrocue), (0+1), datetime.today().strftime('%m-%d-%y'))
+#         # practice for just one retro cue
+#         repeat_prac = 1
+#         while repeat_prac == 1:
+#             pic_order = np.random.permutation( np.linspace(0, Prac_Task_Parameters['n_trials'], num=Prac_Task_Parameters['n_trials'], endpoint=False) )
+#             out_dict = prepare_block_trials(0, Cue_types, Prac_Task_Parameters, Prac_Trl_Durs['delay_2'][ind], [cur_retrocue, cur_retrocue], Img_Dict, pic_order, resp_keys)
+#             filename = thisDir_save + u'/ThalHi_data/v2_' + expInfo['Method'] + '_data/sub-%s_task-%s_block-00%s_date-%s.csv' % (expInfo['Participant_ID'], (expName+'PracticeWith'+cur_retrocue), (0+1), datetime.today().strftime('%m-%d-%y'))
             
-            Prac.draw()
-            win.flip()
-            event.waitKeys()
+#             Prac.draw()
+#             win.flip()
+#             event.waitKeys()
             
-            block_acc = run_task(0, Prac_Task_Parameters, expInfo, Prac_Trl_Durs, frame_rate, Cue_types, retrocue_textobj, Img_Dict, pic_order, {}, out_dict, resp_keys, filename, 1)
+#             block_acc = run_task(0, Prac_Task_Parameters, expInfo, Prac_Trl_Durs, frame_rate, Cue_types, retrocue_textobj, Img_Dict, pic_order, {}, out_dict, resp_keys, filename, 1)
             
-            Repeat_Screen.draw()
-            Cur_Acc.text = ("Accuracy: ", str(block_acc))
-            Cur_Acc.draw()
-            win.flip()
-            keypress = event.waitKeys(keyList=['r','m'])
-            print(keypress[0])
-            if keypress[0] == 'm':
-                repeat_prac = 0
+#             Repeat_Screen.draw()
+#             Cur_Acc.text = ("Accuracy: ", str(block_acc))
+#             Cur_Acc.draw()
+#             win.flip()
+#             keypress = event.waitKeys(keyList=['r','m'])
+#             print(keypress[0])
+#             if keypress[0] == 'm':
+#                 repeat_prac = 0
     
     
 
