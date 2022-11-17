@@ -292,46 +292,54 @@ vert_line = visual.Rect(win=win, units='deg', pos=(0,0), size=[0.5, 1.5], color=
 
 ##### create a attribute dictionary saving all cue types
 # note, copying the shapestim and visual.circle object using copy.copy() turns out to be critical, otherwise can't change colors on the fly
-tree_imgs = {'texture':{'fsr':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/texture/fsr.png', units='norm', pos=(0,0)),
-                        'fsb':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/texture/fsb.png', units='norm', pos=(0,0)),
-                        'far':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/texture/far.png', units='norm', pos=(0,0)),
-                        'fab':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/texture/fab.png', units='norm', pos=(0,0)),
-                        'dsr':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/texture/dsr.png', units='norm', pos=(0,0)),
-                        'dsb':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/texture/dsb.png', units='norm', pos=(0,0)),
-                        'dar':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/texture/dar.png', units='norm', pos=(0,0)),
-                        'dab':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/texture/dab.png', units='norm', pos=(0,0)),},
-            'shape':{'fsr':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/shape/fsr.png', units='norm', pos=(0,0)),
-                        'fsb':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/shape/fsb.png', units='norm', pos=(0,0)),
-                        'far':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/shape/far.png', units='norm', pos=(0,0)),
-                        'fab':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/shape/fab.png', units='norm', pos=(0,0)),
-                        'dsr':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/shape/dsr.png', units='norm', pos=(0,0)),
-                        'dsb':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/shape/dsb.png', units='norm', pos=(0,0)),
-                        'dar':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/shape/dar.png', units='norm', pos=(0,0)),
-                        'dab':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/shape/dab.png', units='norm', pos=(0,0)),},
-            'color':{'fsr':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/color/fsr.png', units='norm', pos=(0,0)),
-                        'fsb':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/color/fsb.png', units='norm', pos=(0,0)),
-                        'far':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/color/far.png', units='norm', pos=(0,0)),
-                        'fab':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/color/fab.png', units='norm', pos=(0,0)),
-                        'dsr':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/color/dsr.png', units='norm', pos=(0,0)),
-                        'dsb':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/color/dsb.png', units='norm', pos=(0,0)),
-                        'dar':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/color/dar.png', units='norm', pos=(0,0)),
-                        'dab':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/color/dab.png', units='norm', pos=(0,0)),}}
+tree_imgs = {'texture':{'fsr':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/texture/fsr.png', units='norm', pos=(0,0)),
+                        'fsb':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/texture/fsb.png', units='norm', pos=(0,0)),
+                        'far':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/texture/far.png', units='norm', pos=(0,0)),
+                        'fab':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/texture/fab.png', units='norm', pos=(0,0)),
+                        'dsr':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/texture/dsr.png', units='norm', pos=(0,0)),
+                        'dsb':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/texture/dsb.png', units='norm', pos=(0,0)),
+                        'dar':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/texture/dar.png', units='norm', pos=(0,0)),
+                        'dab':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/texture/dab.png', units='norm', pos=(0,0)),},
+            'shape':{'fsr':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/shape/fsr.png', units='norm', pos=(0,0)),
+                        'fsb':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/shape/fsb.png', units='norm', pos=(0,0)),
+                        'far':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/shape/far.png', units='norm', pos=(0,0)),
+                        'fab':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/shape/fab.png', units='norm', pos=(0,0)),
+                        'dsr':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/shape/dsr.png', units='norm', pos=(0,0)),
+                        'dsb':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/shape/dsb.png', units='norm', pos=(0,0)),
+                        'dar':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/shape/dar.png', units='norm', pos=(0,0)),
+                        'dab':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/shape/dab.png', units='norm', pos=(0,0)),},
+            'color':{'fsr':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/color/fsr.png', units='norm', pos=(0,0)),
+                        'fsb':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/color/fsb.png', units='norm', pos=(0,0)),
+                        'far':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/color/far.png', units='norm', pos=(0,0)),
+                        'fab':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/color/fab.png', units='norm', pos=(0,0)),
+                        'dsr':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/color/dsr.png', units='norm', pos=(0,0)),
+                        'dsb':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/color/dsb.png', units='norm', pos=(0,0)),
+                        'dar':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/color/dar.png', units='norm', pos=(0,0)),
+                        'dab':visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/color/dab.png', units='norm', pos=(0,0)),}}
 
-Prac_Cue_types = {'fsr': {'cue':'fsr', 'Color':'red',  'Texture':'Filled',  'Shape':'Star',     'Feature':{'texture':'shape', 'shape':'color',   'color':'shape'},   
+Prac_Cue_types = {'fsr': {'cue':'fsr', 'Color':'red',  'Texture':'Filled',  'Shape':'Star',     
+                            'Feature':{'A':{'texture':'shape',  'shape':'color',  'color':'shape'}, 'B':{'texture':'color',  'shape':'texture',  'color':'texture'}},   
                             'Task':{'A':{'texture':'Scene', 'shape':'Face',  'color':'Scene'},'B':{'texture':'Face', 'shape':'Face',  'color':'Face'}}, 'cue_stim': copy.copy(filled_star_red) },
-                 'fsb': {'cue':'fsb', 'Color':'blue', 'Texture':'Filled',   'Shape':'Star',     'Feature':{'texture':'shape', 'shape':'color',   'color':'texture'}, 
+                 'fsb': {'cue':'fsb', 'Color':'blue', 'Texture':'Filled',   'Shape':'Star',     
+                            'Feature':{'A':{'texture':'shape', 'shape':'color',   'color':'texture'}, 'B':{'texture':'color',  'shape':'texture',  'color':'shape'}},
                             'Task':{'A':{'texture':'Scene', 'shape':'Scene', 'color':'Face'}, 'B':{'texture':'Scene', 'shape':'Face',  'color':'Scene'}}, 'cue_stim': copy.copy(filled_star_blue) },
-                 'far': {'cue':'far', 'Color':'red',  'Texture':'Filled',   'Shape':'Asterisk', 'Feature':{'texture':'shape', 'shape':'texture', 'color':'shape'},   
+                 'far': {'cue':'far', 'Color':'red',  'Texture':'Filled',   'Shape':'Asterisk', 
+                            'Feature':{'A':{'texture':'shape', 'shape':'texture', 'color':'shape'}, 'B':{'texture':'color', 'shape':'color', 'color':'texture'}},  
                             'Task':{'A':{'texture':'Face',  'shape':'Face',  'color':'Face'}, 'B':{'texture':'Face', 'shape':'Face',  'color':'Face'}}, 'cue_stim': copy.copy(filled_asterisk_red) },
-                 'fab': {'cue':'fab', 'Color':'blue', 'Texture':'Filled',   'Shape':'Asterisk', 'Feature':{'texture':'shape', 'shape':'texture', 'color':'texture'}, 
+                 'fab': {'cue':'fab', 'Color':'blue', 'Texture':'Filled',   'Shape':'Asterisk', 
+                            'Feature':{'A':{'texture':'shape', 'shape':'texture', 'color':'texture'}, 'B':{'texture':'color', 'shape':'color', 'color':'shape'}}, 
                             'Task':{'A':{'texture':'Face',  'shape':'Face',  'color':'Face'}, 'B':{'texture':'Scene', 'shape':'Scene',  'color':'Face'}}, 'cue_stim': copy.copy(filled_asterisk_blue) },
-                 'dsr': {'cue':'dsr', 'Color':'red',  'Texture':'Outline',  'Shape':'Star',     'Feature':{'texture':'color', 'shape':'color',   'color':'shape'},   
+                 'dsr': {'cue':'dsr', 'Color':'red',  'Texture':'Outline',  'Shape':'Star',     
+                            'Feature':{'A':{'texture':'color', 'shape':'color',   'color':'shape'}, 'B':{'texture':'shape', 'shape':'texture',   'color':'texture'}},   
                             'Task':{'A':{'texture':'Face',  'shape':'Face',  'color':'Scene'}, 'B':{'texture':'Scene', 'shape':'Scene',  'color':'Scene'}}, 'cue_stim': copy.copy(donut_star_red) },
-                 'dsb': {'cue':'dsb', 'Color':'blue', 'Texture':'Outline',  'Shape':'Star',     'Feature':{'texture':'color', 'shape':'color',   'color':'texture'}, 
+                 'dsb': {'cue':'dsb', 'Color':'blue', 'Texture':'Outline',  'Shape':'Star',     
+                            'Feature':{'A':{'texture':'color', 'shape':'color',   'color':'texture'}, 'B':{'texture':'shape', 'shape':'texture',   'color':'shape'}}, 
                             'Task':{'A':{'texture':'Scene', 'shape':'Scene', 'color':'Scene'}, 'B':{'texture':'Scene', 'shape':'Scene',  'color':'Scene'}}, 'cue_stim': copy.copy(donut_star_blue) },
-                 'dab': {'cue':'dab', 'Color':'blue', 'Texture':'Outline',  'Shape':'Asterisk', 'Feature':{'texture':'color', 'shape':'texture', 'color':'texture'}, 
+                 'dab': {'cue':'dab', 'Color':'blue', 'Texture':'Outline',  'Shape':'Asterisk', 
+                            'Feature':{'A':{'texture':'color', 'shape':'texture', 'color':'texture'}, 'B':{'texture':'shape', 'shape':'color', 'color':'shape'}}, 
                             'Task':{'A':{'texture':'Scene', 'shape':'Scene', 'color':'Scene'}, 'B':{'texture':'Face', 'shape':'Scene',  'color':'Face'}}, 'cue_stim': copy.copy(donut_asterisk_blue) },
-                 'dar': {'cue':'dar', 'Color':'red',  'Texture':'Outline',  'Shape':'Asterisk', 'Feature':{'texture':'color', 'shape':'texture', 'color':'shape'},   
+                 'dar': {'cue':'dar', 'Color':'red',  'Texture':'Outline',  'Shape':'Asterisk', 
+                            'Feature':{'A':{'texture':'color', 'shape':'texture', 'color':'shape'}, 'B':{'texture':'shape', 'shape':'color', 'color':'texture'}},   
                             'Task':{'A':{'texture':'Face',  'shape':'Scene', 'color':'Face'}, 'B':{'texture':'Face', 'shape':'Face',  'color':'Scene'}}, 'cue_stim': copy.copy(donut_asterisk_red) }}
 
 cue_list = ['fsr', 'fsb', 'far', 'fab', 'dsr', 'dsb', 'dab', 'dar']
@@ -649,26 +657,46 @@ def run_tutorial(version, Prac_Cue_types, tree_list, trl_fig_list):
     shapeTxt = visual.TextStim(win=win, text=u'If you see a shape retro cue you will need to first determine if the cue object presented at the beginning of the trial is a star or asterisk', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.2), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
     colorTxt = visual.TextStim(win=win, text=u'If you see a color retro cue you will need to first determine if the cue object presented at the beginning of the trial is a warm or cool color', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.2), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
     RCL_Dict = {'texture':textureTxt, 'shape':shapeTxt, 'color':colorTxt}
-    textureTxt2 = visual.TextStim(win=win, text=u'An object with a matching fill and outline means you should focus on the shape of the object \nAn object with a mismatching fill and outline means you should focus on the color of the object', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.35), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
-    shapeTxt2 = visual.TextStim(win=win, text=u'A star means you should focus on the color of the object\nAn asterisk means you should focus on the texture of the object', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.35), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
-    colorTxt2 = visual.TextStim(win=win, text=u'A warm colored object means you should focus on the shape of the object \nA cool colored object means you should focus on the texture of the object', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.35), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
-    RCL_Dict2 = {'texture':textureTxt2, 'shape':shapeTxt2, 'color':colorTxt2}
-    EX_txt = visual.TextStim(win=win, text=u'text', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0,0.2), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1)
-    
-    LL_txt = visual.TextStim(win=win, text=u'text', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0,0.2), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1)
-    WhatTaskQ = visual.TextStim(win=win, text=u'', font=u'Arial', units='norm', pos=(0,0.55), height=0.08, ori=0, color=u'white', colorSpace='rgb', opacity=1)
-    Answer = visual.TextStim(win=win, text=u'Face', font=u'Arial', units='norm', pos=(0, 0), height=0.2, ori=0, color=u'white', colorSpace='rgb', opacity=1)
     # LL_Dict = {'texture':[['filled in','shape'],['only an outline','color']], 'shape':[['asterisk','texture'],['star','color']], 'color':[['red','shape'],['blue','texture']]}
     # LL_to_Task = {'shape':[['asterisk','face'],['star','scene']], 'color':[['red','face'],['blue','scene']], 'texture':[['filled in','face'],['only an outline','scene']]}
     # HCC_Dict = {'texture':{'shape':{'asterisk':['far','fab'], 'star':['fsr','fsb']}, 'color':{'red':['dar','dsr'], 'blue':['dsb','dab']}}, 
     #             'shape':{'texture':{'filled in':['far','fab'], 'only an outline':['dar','dab']}, 'color':{'red':['fsr','dsr'], 'blue':['fsb','dsb']}}, 
     #             'color':{'shape':{'asterisk':['far','dar'], 'star':['fsr','dsr']}, 'texture':{'filled in':['fab','fsb'], 'only an outline':['dab','dsb']}}}
-    LL_Dict = {'texture':[['matching fill and outline','shape'],['mismatching fill and outline','color']], 'shape':[['asterisk','texture'],['star','color']], 'color':[['warm color','shape'],['cool color','texture']]}
-    LL_to_Task = {'shape':[['asterisk','face'],['star','scene']], 'color':[['warm color','face'],['cool color','scene']], 'texture':[['matching fill and outline','face'],['mismatching fill and outline','scene']]}
-    HCC_Dict = {'texture':{'shape':{'asterisk':['far','fab'], 'star':['fsr','fsb']}, 'color':{'warm color':['dar','dsr'], 'cool color':['dsb','dab']}}, 
-                'shape':{'texture':{'matching fill and outline':['far','fab'], 'mismatching fill and outline':['dar','dab']}, 'color':{'warm color':['fsr','dsr'], 'cool color':['fsb','dsb']}}, 
-                'color':{'shape':{'asterisk':['far','dar'], 'star':['fsr','dsr']}, 'texture':{'matching fill and outline':['fab','fsb'], 'mismatching fill and outline':['dab','dsb']}}}
+    if counterbalance=='A':
+        textureTxt2 = visual.TextStim(win=win, text=u'An object with a matching fill and outline means you should focus on the shape of the object \nAn object with a mismatching fill and outline means you should focus on the color of the object', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.35), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
+        shapeTxt2 = visual.TextStim(win=win, text=u'A star means you should focus on the color of the object\nAn asterisk means you should focus on the texture of the object', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.35), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
+        colorTxt2 = visual.TextStim(win=win, text=u'A warm colored object means you should focus on the shape of the object \nA cool colored object means you should focus on the texture of the object', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.35), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
+        RCL_Dict2 = {'texture':textureTxt2, 'shape':shapeTxt2, 'color':colorTxt2}
+
+        LL_Dict = {'texture':[['matching fill and outline','shape'],['mismatching fill and outline','color']], 
+                    'shape':[['asterisk','texture'],['star','color']], 
+                    'color':[['warm color','shape'],['cool color','texture']]}
+        LL_to_Task = {'shape':[['asterisk','face'],['star','scene']], 
+                    'color':[['warm color','face'],['cool color','scene']], 
+                    'texture':[['matching fill and outline','face'],['mismatching fill and outline','scene']]}
+        HCC_Dict = {'texture':{'shape':{'asterisk':['far','fab'], 'star':['fsr','fsb']}, 'color':{'warm color':['dar','dsr'], 'cool color':['dsb','dab']}}, 
+                    'shape':{'texture':{'matching fill and outline':['far','fab'], 'mismatching fill and outline':['dar','dab']}, 'color':{'warm color':['fsr','dsr'], 'cool color':['fsb','dsb']}}, 
+                    'color':{'shape':{'asterisk':['far','dar'], 'star':['fsr','dsr']}, 'texture':{'matching fill and outline':['fab','fsb'], 'mismatching fill and outline':['dab','dsb']}}}
+    else:
+        textureTxt2 = visual.TextStim(win=win, text=u'An object with a matching fill and outline means you should focus on the color of the object \nAn object with a mismatching fill and outline means you should focus on the shape of the object', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.35), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
+        shapeTxt2 = visual.TextStim(win=win, text=u'A star means you should focus on the texture of the object\nAn asterisk means you should focus on the color of the object', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.35), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
+        colorTxt2 = visual.TextStim(win=win, text=u'A warm colored object means you should focus on the texture of the object \nA cool colored object means you should focus on the shape of the object', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0, 0.35), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
+        RCL_Dict2 = {'texture':textureTxt2, 'shape':shapeTxt2, 'color':colorTxt2}
+        
+        LL_Dict = {'texture':[['matching fill and outline','color'],['mismatching fill and outline','shape']], 
+                    'shape':[['star','texture'],['asterisk','color']], 
+                    'color':[['warm color','texture'],['cool color','shape']]}
+        LL_to_Task = {'shape':[['asterisk','face'],['star','scene']], 
+                    'color':[['warm color','face'],['cool color','scene']], 
+                    'texture':[['matching fill and outline','face'],['mismatching fill and outline','scene']]}
+        HCC_Dict = {'texture':{'shape':{'asterisk':['dar','dab'], 'star':['dsr','dsb']}, 'color':{'warm color':['far','fsr'], 'cool color':['fsb','fab']}}, 
+                    'shape':{'texture':{'matching fill and outline':['fsr','fsb'], 'mismatching fill and outline':['dsr','dsb']}, 'color':{'warm color':['far','dar'], 'cool color':['fab','dab']}}, 
+                    'color':{'shape':{'asterisk':['fab','dab'], 'star':['fsb','dsb']}, 'texture':{'matching fill and outline':['far','fsr'], 'mismatching fill and outline':['dar','dsr']}}}
     obj_codes = {0:['f','d'], 1:['a','s'], 2:['r','b']}
+    EX_txt = visual.TextStim(win=win, text=u'text', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0,0.2), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1)
+    LL_txt = visual.TextStim(win=win, text=u'text', wrapWidth=1.68, font=u'Arial', units='norm', pos=(0,0.2), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1)
+    WhatTaskQ = visual.TextStim(win=win, text=u'', font=u'Arial', units='norm', pos=(0,0.55), height=0.08, ori=0, color=u'white', colorSpace='rgb', opacity=1)
+    Answer = visual.TextStim(win=win, text=u'Face', font=u'Arial', units='norm', pos=(0, 0), height=0.2, ori=0, color=u'white', colorSpace='rgb', opacity=1)
     SubTree_Overview = visual.TextStim(win=win, text='', font=u'Arial', units='norm', pos=(0, 0.55), height=0.09, ori=0, color=u'white', colorSpace='rgb', opacity=1);
     
     # -------------------- Run Tutorial ------------------
@@ -696,7 +724,7 @@ def run_tutorial(version, Prac_Cue_types, tree_list, trl_fig_list):
     repeat_instruct = True
     while repeat_instruct:
         for ind, cur_retrocue in enumerate(retrocue_list):
-            cur_contxt_tree = visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/others/'+cur_retrocue+'.png', units='norm', pos=(0,-0.3), size=(0.75,0.70))
+            cur_contxt_tree = visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/others/'+cur_retrocue+'.png', units='norm', pos=(0,-0.3), size=(0.75,0.70))
             (RCL_Dict[cur_retrocue]).draw() # print overview for this specific retro cue
             win.flip()
             event.waitKeys()
@@ -710,7 +738,7 @@ def run_tutorial(version, Prac_Cue_types, tree_list, trl_fig_list):
         retro_list = [retrocue_list[0], retrocue_list[1], retrocue_list[0], retrocue_list[1], retrocue_list[0], retrocue_list[1], retrocue_list[0], retrocue_list[1], retrocue_list[0], retrocue_list[1]]
         rand_selection = np.random.randint(0, 2, len(retro_list))
         for ind, cur_select in enumerate(rand_selection):
-            ex_img_path = os.getcwd() + '/tutorial/others/' + retro_list[ind]
+            ex_img_path = os.getcwd() + '/tutorial/'+counterbalance+'/others/' + retro_list[ind]
             ex_img = visual.ImageStim(win=win, image=os.path.join(ex_img_path,(HCC_Dict[retro_list[ind]][LL_Dict[retro_list[ind]][cur_select][1]][LL_to_Task[LL_Dict[retro_list[ind]][cur_select][1]][cur_select][0]][np.random.randint(0, 2)]+'_'+str(np.random.randint(1, 4))+'.png')), units='norm', pos=(0,-0.4), size=(0.95,0.50))
             EX_txt.text = "A(n) " + LL_Dict[retro_list[ind]][cur_select][0] + " object followed by a " + retro_list[ind] + " retro cue means you should focus on what feature?"
             EX_txt.draw() # print overview for this specific retro cue
@@ -775,7 +803,7 @@ def run_tutorial(version, Prac_Cue_types, tree_list, trl_fig_list):
                 win.flip()
                 event.waitKeys()
                 # now give answer   
-                Answer.text = "Feature: " + Prac_Cue_types[cur_cue]['Feature'][cur_retrocue] + "\nTask: " + Prac_Cue_types[cur_cue]['Task'][counterbalance][cur_retrocue]
+                Answer.text = "Feature: " + Prac_Cue_types[cur_cue]['Feature'][counterbalance][cur_retrocue] + "\nTask: " + Prac_Cue_types[cur_cue]['Task'][counterbalance][cur_retrocue]
                 Answer.draw()
                 win.flip()
                 event.waitKeys()
@@ -878,8 +906,8 @@ def run_task(i_block, Task_Parameters, expInfo, Trl_Durs, frame_rate, Cue_types,
 kb = keyboard.Keyboard() # keyboard has better timing that other keypress functions
 
 ###### load tree pngs
-tree1 = visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+retrocues[0]+'.png', units='norm', pos=(0.45,-0.5), size=0.85) 
-tree2 = visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+retrocues[1]+'.png', units='norm', pos=(-0.45,-0.5), size=0.85) 
+tree1 = visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/'+retrocues[0]+'.png', units='norm', pos=(0.45,-0.5), size=0.85) 
+tree2 = visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/'+counterbalance+'/'+retrocues[1]+'.png', units='norm', pos=(-0.45,-0.5), size=0.85) 
 Trial_Fig1 = visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/Trial_Figure_'+retrocues[0]+'.png', units='norm', pos=(0.45,0.2), size=(0.65,0.42)) 
 Trial_Fig2 = visual.ImageStim(win=win, image=os.getcwd()+'/tutorial/Trial_Figure_'+retrocues[1]+'.png', units='norm', pos=(-0.45,0.2), size=(0.65,0.42)) 
 
