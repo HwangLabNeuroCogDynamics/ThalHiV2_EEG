@@ -41,6 +41,7 @@ import pickle
 import fnmatch
 import argparse
 import datetime
+from df2gspread import df2gspread as d2g
 plt.ion()
 
 def init_argparse() -> argparse.ArgumentParser:
@@ -58,6 +59,9 @@ def init_argparse() -> argparse.ArgumentParser:
                         default=False, action="store_true")
     parser.add_argument("--gen_vis_erp_plots",
                         help="create and display primary visual erp plots, default is false",
+                        default=False, action="store_true")
+    parser.add_argument("--get_epoch_nums", 
+                        help="get epoch numbers and add to google sheets file",
                         default=False, action="store_true")
     return parser
 
@@ -138,6 +142,14 @@ if args.preproc:
             beh_files = glob.glob(os.path.join(raw_behav, ("sub-"+str(sub)+"_task-ThalHi_v2_block-00[1-4]_date-*.csv")))
         elif int(sub) == 10263:
             beh_files = glob.glob(os.path.join(raw_behav,("sub-"+str(sub)+"_task-ThalHiV2_block-00[3-7]_*.csv"))) # only use blocks 3-7
+        elif int(sub) ==10287:
+            beh_files = glob.glob(os.path.join(raw_behav,("sub-"+str(sub)+"_task-ThalHiV2_block-00[1-2]_*.csv")))
+        elif int(sub) ==10292:
+            beh_files = glob.glob(os.path.join(raw_behav,("sub-"+str(sub)+"_task-ThalHiV2_block-00[1-2]_*.csv")))
+        elif int(sub) ==10218:
+            beh_files = glob.glob(os.path.join(raw_behav,("sub-"+str(sub)+"_task-ThalHiV2_block-00[1-3]_*.csv")))
+        elif int(sub) ==10305:
+            beh_files = glob.glob(os.path.join(raw_behav,("sub-"+str(sub)+"_task-ThalHiV2_block-00[1-5]_*.csv")))
         else:
             beh_files = glob.glob(os.path.join(raw_behav,("sub-"+str(sub)+"_task-ThalHiV2_block-00[1-7]_*.csv")))
         print(beh_files)
@@ -155,6 +167,15 @@ if args.preproc:
                 if bf == beh_files[0]:
                     tmp_beh_df = pd.read_csv(bf)
                     tmp_beh_df.drop([0,1,2], inplace=True)
+                    beh_df = beh_df.append(tmp_beh_df) # add each block to full df
+                else:
+                    beh_df = beh_df.append(pd.read_csv(bf)) # add each block to full df
+            elif int(sub) == 10273:
+                if bf == beh_files[4]:
+                    tmp_beh_df = pd.read_csv(bf)
+                    print(tmp_beh_df.loc[46, ["rt"]])
+                    tmp_beh_df.loc[46, ["rt"]] = -1
+                    tmp_beh_df.loc[46, ["subj_resp"]] = -1
                     beh_df = beh_df.append(tmp_beh_df) # add each block to full df
                 else:
                     beh_df = beh_df.append(pd.read_csv(bf)) # add each block to full df
@@ -180,12 +201,26 @@ if args.preproc:
                 raw_p1 = raw.copy().crop(tmax=871)
                 raw_p2 = raw.copy().crop(tmin=1092) # crop out time where it crashed during block 2
                 raw, events = mne.concatenate_raws(raws=[raw_p1, raw_p2], events_list = [mne.find_events(raw_p1), mne.find_events(raw_p2)])
+            if int(sub) == 10287:
+                raw=raw.crop(tmax=1193)
+            if int(sub) == 10292:
+                raw=raw.crop(tmax=1192)
+            if int(sub) == 10218:
+                raw=raw.crop(tmax=1784)
+            if int(sub) == 10305:
+                raw=raw.crop(tmax=2982)
             raw.set_montage(montage = "biosemi64")
             # make a note of which EXG electrodes are eog and ecg for later
             EOG_channels=[['EXG3', 'EXG4'], ['EXG5', 'EXG6', 'FP1', 'FP2']]
             ECG_channels=['EXG7']
             # -- find events in the raw data file
-            if int(sub) != 10264:
+            if int(sub) == 10273:
+                events = mne.find_events(raw, shortest_event=1) # pull out the events (triggers) from the data file
+                print(events.shape)
+                events = np.delete(events, (2684), axis=0)
+                print(events.shape)
+                print(events[2683:26866,:])
+            elif int(sub) != 10264:
                 events = mne.find_events(raw) # pull out the events (triggers) from the data file
             # -- save out some raw data variables into our preprocessing csv file
             cur_csv['sampling_rate'] = raw.info['sfreq'] # get sampling rate
@@ -295,7 +330,11 @@ if args.preproc:
         else:
             # load preICA file
             preICA_eeg = mne.io.read_raw_fif(os.path.join(output_path,"preproc",("sub-"+sub+"_task-ThalHiV2_eeg-preICA.fif")), preload = True)
-            events = mne.find_events(preICA_eeg) # pull out the events (triggers) from the data fileng rate
+            if int(sub) == 10273:
+                events = mne.find_events(preICA_eeg, shortest_event=1) # pull out the events (triggers) from the data file
+                events = np.delete(events, (2684), axis=0)
+            else:
+                events = mne.find_events(preICA_eeg) # pull out the events (triggers) from the data file
             cur_csv = {'Participant_ID': sub, 'low_pass_filt': low_pass, 'high_pass_filt': high_pass, 'erp_baseline': str(epo_baseline), 'trl_baseline': 'None', 'sampling_rate': preICA_eeg.info['sfreq']}
             cur_csv['ica_method'] = "input a copy of the continuous data with 1Hz highpass and 35Hz lowpass with no segment rejection THEN applied back to raw after selecting artefactual ICs"
             tmp_df = pd.read_csv(os.path.join(output_path,"preproc",("sub-"+sub+"_task-ThalHiV2_preprocessingParameters.csv")))
@@ -355,7 +394,11 @@ if args.preproc:
         else:
             # load postICA file
             postICA_eeg = mne.io.read_raw_fif(os.path.join(output_path,"preproc",("sub-"+sub+"_task-ThalHiV2_eeg-postICA.fif")), preload = True)
-            events = mne.find_events(postICA_eeg) # pull out the events (triggers) from the data file
+            if int(sub) == 10273:
+                events = mne.find_events(postICA_eeg, shortest_event=1) # pull out the events (triggers) from the data file
+                events = np.delete(events, (2684), axis=0)
+            else:
+                events = mne.find_events(postICA_eeg) # pull out the events (triggers) from the data file
             sampling_rate = postICA_eeg.info['sfreq'] # get sampling rate
             cur_csv = {'Participant_ID': sub, 'low_pass_filt': low_pass, 'high_pass_filt': high_pass, 'erp_baseline': str(epo_baseline), 'trl_baseline': 'None', 'sampling_rate': preICA_eeg.info['sfreq']}
             cur_csv['ica_method'] = "input a copy of the continuous data with 1Hz highpass and 35Hz lowpass with no segment rejection THEN applied back to raw after selecting artefactual ICs"
@@ -446,7 +489,10 @@ if args.preproc:
             trl_epochs = mne.Epochs(raw = eeg_reref, events = cue_events, event_id = cue_codes, tmin = -1.0, tmax = 6.0, reject=epo_reject_dict,
                                     baseline = None, on_missing = 'warn', event_repeated = 'drop', metadata = beh_df, preload = True)
             trl_epochs.plot_drop_log() # so we can see if a certain channel is causing lots of data loss
-            num_interp_already = len(str(cur_csv['bad_channels'][0]).split(' '))
+            try:
+                num_interp_already = len(str(cur_csv['bad_channels'][0]).split(' '))
+            except:
+                num_interp_already = 0
             new_bad_num = 7 # set high here so it stays in the while loop
             print("\nReminder!!! You have already interpolated " + str(num_interp_already) + " channels (" + str(cur_csv['bad_channels'][0]) + ")\n")
             i4 = input("Is there a channel causing lots of data loss that we should interpolate? [y/n]: ")
@@ -518,6 +564,53 @@ if args.preproc:
 
 
 
+# ----------------------------------------------------------------------------------------------- 
+# ----------------------------------------------------------------------------------------------- 
+# - - - - - - - - - - - - - - - -     Num Usable Epochs     - - - - - - - - - - - - - - - - - - -
+# ----------------------------------------------------------------------------------------------- 
+# ----------------------------------------------------------------------------------------------- 
+epo_plot_dict = {'Usable_stim_epochs': 'stim', 'Usable_trl_epochs': 'trl', 'Usable_resp_epochs': 'resp'}
+if args.get_epoch_nums:
+    # -- get list of epoched subjects
+    epo_subjects = generate_subj_list(subj_opt, os.path.join(output_path,"preproc"), 'stim_eeg-epo.fif')
+    sub_list = []
+    for epo_file in epo_subjects:
+        sid = re.search("[0-9]{5}",epo_file) # pull out subject id number from raw file string
+        if sid:
+            sub_list.append(sid.group(0))
+    print(sub_list)
+
+    # load google sheet as a data frame
+    sheet_name = "Preprocessing"
+    doc_info="" # would normally contain link info BUT removing for github upload
+    url = f"https://docs.google.com/spreadsheets/{doc_info}=out:csv&sheet={sheet_name}"
+    prepro_df = pd.read_csv(url)
+    print(prepro_df) # check that it loaded properly by viewing
+    
+    # -- now grab file and get usable epochs for each participant
+    #epo_nums_df = pd.DataFrame({'Subject_ID':sub_list, 'Usable_trl_epochs':np.zeros(len(sub_list)), 'Usable_stim_epochs':np.zeros(len(sub_list)), 'Usable_resp_epochs':np.zeros(len(sub_list))})
+    #print(epo_nums_df)
+    for sub in sorted(sub_list):
+        print("\ncurrently working on subject ", str(sub), "...")
+        sub_idx=list(prepro_df['Subject_ID']).index(int(sub))
+        for cur_epo_type in epo_plot_dict.keys():
+            print("currently getting epoch numbers for "+cur_epo_type)
+            # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            # 1) load raw data and set channel types and montage
+            # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+            epo_eeg = mne.read_epochs(os.path.join(output_path,"preproc",("sub-"+sub+"_task-ThalHiV2_"+epo_plot_dict[cur_epo_type]+"_eeg-epo.fif")), proj=True, preload = False)
+            usable_epos = epo_eeg.selection
+            num_usable_epos = usable_epos.shape[0]
+            prepro_df[cur_epo_type][sub_idx] = num_usable_epos
+    print(prepro_df)
+    
+    # upload changes to google sheet
+    prepro_df.to_csv(os.path.join(output_path,"scripts","temp.csv"))
+    #d2g.upload(prepro_df, gfile=url, wks_name=sheet_name) # would need to add credentials to actually update google sheet
+            
+
+
+
 
 # ----------------------------------------------------------------------------------------------- 
 # ----------------------------------------------------------------------------------------------- 
@@ -525,7 +618,6 @@ if args.preproc:
 # ----------------------------------------------------------------------------------------------- 
 # ----------------------------------------------------------------------------------------------- 
 epo_plot_dict = {'stimulus': 'stim', 'cue': 'trl', 'response': 'resp'}
-
 if args.reinspect_epochs:
     # -- get list of epoched subjects
     epo_subjects = generate_subj_list(subj_opt, os.path.join(output_path,"preproc"), 'stim_eeg-epo.fif')
