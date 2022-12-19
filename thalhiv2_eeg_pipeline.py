@@ -8,17 +8,17 @@ Quantum EEG Preprocessing script
 Overview of sections
     setup - generate paths and subject list and then loop through subjects
     1. load raw data
-    2. high and low pass filter the data
+    2. high and low pass filter the data + re-reference
         * high pass of 0.1 Hz
         * low pass of 50 Hz
     3. plot and inspect filtered data for bad channels
         * manually mark bad channels to remove at this point
-    4. epoch data
-    5. inspect and reject epochs with high emg (muscle) activity or drift
-    6. run ICA on the epoched data (task data only)
+        * manually mark bad chunks of data as bad at this point
+    4. run ICA on the copy of the data (task data only)
         * will view ICs and manually reject artefactual ICs
-    7. inspect and reject remaining bad epochs (blinks, saccades, etc.)
-    8. re-reference data (avg. re-ref
+    5. epoch data
+    6. inspect and reject remaining bad epochs (blinks, saccades, muscle, etc.)
+    7. re-reference data (avg. re-ref)
 
 dylan script link: https://github.com/HwangLabNeuroCogDynamics/TaskRep/blob/main/preprocess.py
 
