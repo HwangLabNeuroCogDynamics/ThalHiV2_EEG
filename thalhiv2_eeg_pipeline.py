@@ -16,9 +16,8 @@ Overview of sections
         * manually mark bad chunks of data as bad at this point
     4. run ICA on the copy of the data (task data only)
         * will view ICs and manually reject artefactual ICs
-    5. epoch data
+    5. re-reference (avg. re-ref) again and then epoch data
     6. inspect and reject remaining bad epochs (blinks, saccades, muscle, etc.)
-    7. re-reference data (avg. re-ref)
 
 dylan script link: https://github.com/HwangLabNeuroCogDynamics/TaskRep/blob/main/preprocess.py
 
