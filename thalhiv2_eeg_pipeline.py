@@ -151,6 +151,7 @@ if args.preproc:
             beh_files = glob.glob(os.path.join(raw_behav,("sub-"+str(sub)+"_task-ThalHiV2_block-00[1-5]_*.csv")))
         else:
             beh_files = glob.glob(os.path.join(raw_behav,("sub-"+str(sub)+"_task-ThalHiV2_block-00[1-7]_*.csv")))
+        beh_files = sorted(beh_files)
         print(beh_files)
         beh_df = pd.DataFrame() # create empty df to fill in
         for bf in beh_files:
